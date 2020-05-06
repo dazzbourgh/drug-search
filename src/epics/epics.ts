@@ -1,8 +1,8 @@
 import { ActionsObservable, combineEpics, ofType } from 'redux-observable'
-import { SEARCH } from '../actions/action-types'
+import { RECEIVE, SEARCH } from '../actions/action-types'
 import { receiveSearchResults, startFetching, stopFetching } from '../actions/actions'
 import { of } from 'rxjs'
-import { debounceTime, map, mergeMap, delay, tap } from 'rxjs/operators'
+import { debounceTime, map, mergeMap, delay } from 'rxjs/operators'
 import { SearchResultItem } from '../domain/domain'
 import { AnyAction } from 'redux'
 
@@ -17,20 +17,33 @@ const mockSearchResults = [{
   link: 'https://cloud.google.com'
 }]
 
-function fetchResultsEpic (action$: ActionsObservable<AnyAction>) {
+function startSearchEpic (action$: ActionsObservable<AnyAction>) {
   return action$.pipe(
     ofType(SEARCH),
     debounceTime(300),
-    tap(() => of(startFetching())),
+    mergeMap(() => of(startFetching()))
+  )
+}
+
+function startFetchingEpic (action$: ActionsObservable<AnyAction>) {
+  return action$.pipe(
+    ofType(SEARCH),
+    debounceTime(300),
     delay(1000),
     mergeMap((action: any) => of(mockSearchResults).pipe(
       map(results => results.filter(startsWithQuery(action.payload.query))),
       map(results => receiveSearchResults(action.payload.query, results))
-    )),
-    tap(() => of(stopFetching()))
+    ))
   )
 }
 
-const rootEpic = combineEpics(fetchResultsEpic)
+function stopFetchingEpic (action$: ActionsObservable<AnyAction>) {
+  return action$.pipe(
+    ofType(RECEIVE),
+    mergeMap(() => of(stopFetching()))
+  )
+}
+
+const rootEpic = combineEpics(startSearchEpic, startFetchingEpic, stopFetchingEpic)
 
 export default rootEpic
