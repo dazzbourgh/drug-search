@@ -1,4 +1,4 @@
-import { initialState, State } from '../domain/state'
+import { State } from '../domain/state'
 import { connect } from 'react-redux'
 import SearchResultList from '../components/SearchResultList'
 

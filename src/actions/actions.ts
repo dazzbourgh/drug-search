@@ -1,4 +1,4 @@
-import { RECEIVE, SEARCH } from './action-types'
+import { RECEIVE, SEARCH, START_FETCHING, STOP_FETCHING } from './action-types'
 import { SearchResultItem } from '../domain/domain'
 
 export interface Action {
@@ -6,21 +6,40 @@ export interface Action {
   payload: any
 }
 
-export function startSearch (query: string) {
+function startSearch (query: string) {
   return {
     type: SEARCH,
     payload: {
+      query
+    }
+  }
+}
+
+function receiveSearchResults (query: string, results: SearchResultItem[]) {
+  return {
+    type: RECEIVE,
+    payload: {
       query,
+      isFetching: false,
+      results
+    }
+  }
+}
+
+function startFetching () {
+  return {
+    type: START_FETCHING,
+    payload: {
       isFetching: true
     }
   }
 }
 
-export function receiveSearchResults (query: string, results: SearchResultItem[]) {
+function stopFetching () {
   return {
-    type: RECEIVE,
+    type: STOP_FETCHING,
     payload: {
-      results
+      isFetching: false
     }
   }
 }
@@ -28,6 +47,7 @@ export function receiveSearchResults (query: string, results: SearchResultItem[]
 export function fetchResults (query: string) {
   return async (dispatch: any) => {
     dispatch(startSearch(query))
+    dispatch(startFetching())
     const results = [{
       title: 'Developedrin',
       link: 'https://github.com'
@@ -35,6 +55,7 @@ export function fetchResults (query: string) {
       title: 'GCPchloroquin',
       link: 'https://cloud.google.com'
     }]
+    dispatch(stopFetching())
     dispatch(receiveSearchResults(query, results))
   }
 }

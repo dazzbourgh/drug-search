@@ -1,37 +1,40 @@
-import { RECEIVE, SEARCH } from '../actions/action-types'
+import { RECEIVE, SEARCH, START_FETCHING, STOP_FETCHING } from '../actions/action-types'
 import { Action } from '../actions/actions'
 import { combineReducers } from 'redux'
-import { initialState } from '../domain/state'
 
-function drugSearchStart (state = initialState, action: Action) {
+function query (state = '', action: Action) {
   switch (action.type) {
     case SEARCH:
-      return Object.assign({}, state, {
-        query: action.payload.query,
-        isFetching: true,
-        results: []
-      })
+      return action.payload.query
     default:
       return state
   }
 }
 
-function drugSearchReceiveResults (state = initialState, action: Action) {
+function isFetching (state = false, action: Action) {
+  switch (action.type) {
+    case START_FETCHING:
+      return true
+    case STOP_FETCHING:
+      return false
+    default:
+      return false
+  }
+}
+
+function results (state = [], action: Action) {
   switch (action.type) {
     case RECEIVE:
-      return Object.assign({}, state, {
-        query: action.payload.query,
-        isFetching: false,
-        results: action.payload.results
-      })
+      return action.payload.results
     default:
       return state
   }
 }
 
 export const rootReducer = combineReducers({
-  drugSearchStart,
-  drugSearchReceiveResults
+  query,
+  isFetching,
+  results
 })
 
 export default rootReducer

@@ -9,7 +9,7 @@ let SearchBar: any = ({ dispatch }: { dispatch: any }) => {
   return (
     <div>
       <input ref={node => { input = node as HTMLInputElement } } />
-      <button onClick={() => fetchResults(input.value)}>Search</button>
+      <button onClick={() => dispatch(fetchResults(input.value))}>Search</button>
     </div>
   )
 }
