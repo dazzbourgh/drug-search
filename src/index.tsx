@@ -8,16 +8,22 @@ import { createLogger } from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from './reducers/reducers'
 import { Provider } from 'react-redux'
+import { createEpicMiddleware } from 'redux-observable'
+import rootEpic from './epics/epics'
 
+const epicMiddleware = createEpicMiddleware()
 const loggerMiddleware = createLogger()
 
 const store = createStore(
   rootReducer,
   applyMiddleware(
     thunkMiddleware, // lets us dispatch() functions
-    loggerMiddleware // neat middleware that logs actions
+    loggerMiddleware, // neat middleware that logs actions
+    epicMiddleware
   )
 )
+
+epicMiddleware.run(rootEpic)
 
 ReactDOM.render(
   <Provider store={store}>

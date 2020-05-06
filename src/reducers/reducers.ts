@@ -1,8 +1,7 @@
 import { RECEIVE, SEARCH, START_FETCHING, STOP_FETCHING } from '../actions/action-types'
-import { Action } from '../actions/actions'
-import { combineReducers } from 'redux'
+import { combineReducers, AnyAction } from 'redux'
 
-function query (state = '', action: Action) {
+function query (state = '', action: AnyAction) {
   switch (action.type) {
     case SEARCH:
       return action.payload.query
@@ -11,7 +10,7 @@ function query (state = '', action: Action) {
   }
 }
 
-function isFetching (state = false, action: Action) {
+function isFetching (state = false, action: AnyAction) {
   switch (action.type) {
     case START_FETCHING:
       return true
@@ -22,7 +21,7 @@ function isFetching (state = false, action: Action) {
   }
 }
 
-function results (state = [], action: Action) {
+function results (state = [], action: AnyAction) {
   switch (action.type) {
     case RECEIVE:
       return action.payload.results
