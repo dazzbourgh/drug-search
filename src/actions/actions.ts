@@ -44,6 +44,9 @@ function stopFetching () {
   }
 }
 
+const startsWithQuery = (query: string) =>
+  (result: SearchResultItem) => result.title.toLowerCase().startsWith(query.toLowerCase())
+
 export function fetchResults (query: string) {
   return async (dispatch: any) => {
     dispatch(startSearch(query))
@@ -56,6 +59,6 @@ export function fetchResults (query: string) {
       link: 'https://cloud.google.com'
     }]
     dispatch(stopFetching())
-    dispatch(receiveSearchResults(query, results))
+    dispatch(receiveSearchResults(query, results.filter(startsWithQuery(query))))
   }
 }
