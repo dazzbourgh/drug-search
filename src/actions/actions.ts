@@ -1,6 +1,5 @@
 import { RECEIVE, SEARCH } from './action-types'
-import { SearchResult } from '../domain/domain'
-import fetch from 'cross-fetch'
+import { SearchResultItem } from '../domain/domain'
 
 export interface Action {
   type: string,
@@ -17,7 +16,7 @@ export function startSearch (query: string) {
   }
 }
 
-export function receiveSearchResults (query: string, results: SearchResult[]) {
+export function receiveSearchResults (query: string, results: SearchResultItem[]) {
   return {
     type: RECEIVE,
     payload: {
@@ -29,8 +28,13 @@ export function receiveSearchResults (query: string, results: SearchResult[]) {
 export function fetchResults (query: string) {
   return async (dispatch: any) => {
     dispatch(startSearch(query))
-    const response = await (await fetch('')).json()
-    const results: SearchResult[] = response as SearchResult[]
+    const results = [{
+      title: 'Developedrin',
+      link: 'https://github.com'
+    }, {
+      title: 'GCPchloroquin',
+      link: 'https://cloud.google.com'
+    }]
     dispatch(receiveSearchResults(query, results))
   }
 }

@@ -1,26 +1,15 @@
 import { RECEIVE, SEARCH } from '../actions/action-types'
 import { Action } from '../actions/actions'
-import { SearchResult } from '../domain/domain'
 import { combineReducers } from 'redux'
-
-interface State {
-  query: string,
-  isFetching: boolean,
-  results: SearchResult[]
-}
-
-const initialState: State = {
-  query: '',
-  isFetching: false,
-  results: []
-}
+import { initialState } from '../domain/state'
 
 function drugSearchStart (state = initialState, action: Action) {
   switch (action.type) {
     case SEARCH:
       return Object.assign({}, state, {
         query: action.payload.query,
-        isFetching: true
+        isFetching: true,
+        results: []
       })
     default:
       return state
@@ -31,6 +20,7 @@ function drugSearchReceiveResults (state = initialState, action: Action) {
   switch (action.type) {
     case RECEIVE:
       return Object.assign({}, state, {
+        query: action.payload.query,
         isFetching: false,
         results: action.payload.results
       })
