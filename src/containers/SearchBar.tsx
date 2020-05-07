@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { startSearch } from '../actions/actions'
-import spinner from '../assets/spinner.svg'
 import { State } from '../domain/state'
 import { createUseStyles } from 'react-jss'
+import { Spinner } from '../components/Spinner'
 
 const barHeight = 50
 const useStyles = createUseStyles({
@@ -16,15 +16,17 @@ const useStyles = createUseStyles({
       left: 5,
       bottom: 5
     },
-    'font-family': '"Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif',
-    'font-size': 'xx-large',
+    fontSize: 'xx-large',
     border: {
       width: 0.4,
       radius: 4
     },
-    'box-shadow': '0 0 0 0.4px',
+    boxShadow: '0 0 0 0.4px',
     '&:focus': {
       'box-shadow': '0 0 5px rgba(103, 171, 243, 1)'
+    },
+    margin: {
+      top: 10
     }
   },
   outerDiv: {
@@ -42,7 +44,7 @@ let SearchBar: any = ({ dispatch, isFetching }: { dispatch: any, isFetching: boo
   const inputElement = <input ref={node => { input = node as HTMLInputElement }}
     onKeyUp={() => dispatch(startSearch(input.value))}
     className={styles.input}/>
-  const spinnerComponent = isFetching ? <img src={spinner} alt="spinner" className={styles.spinner}/> : null
+  const spinnerComponent = isFetching ? <Spinner/> : null
   return (
     <div className={styles.outerDiv}>
       {inputElement}

@@ -4,7 +4,6 @@ import { createUseStyles } from 'react-jss'
 
 const useStyles = createUseStyles({
   searchResult: {
-    fontFamily: ['Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial', 'sans-serif'],
     listStyleType: 'none',
     background: {
       color: 'white'

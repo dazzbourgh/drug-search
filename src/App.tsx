@@ -18,6 +18,7 @@ function App () {
   const styles = useStyles()
   return (
     <div className={styles.container}>
+      <h1>CoolRz</h1>
       <SearchBar />
       <VisibleSearchResultList />
     </div>
