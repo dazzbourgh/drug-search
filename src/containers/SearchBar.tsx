@@ -23,11 +23,6 @@ const useStyles = createUseStyles({
       radius: 4
     },
     'box-shadow': '0 0 0 0.4px',
-    '&:hover': {
-      outline: {
-        width: 0
-      }
-    },
     '&:focus': {
       'box-shadow': '0 0 5px rgba(103, 171, 243, 1)'
     }
